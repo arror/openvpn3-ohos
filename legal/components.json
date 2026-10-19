@@ -1,0 +1,50 @@
+[
+  {
+    "id": "arkovpn",
+    "name": "ArkOvpn 原生核心",
+    "version": "API v2",
+    "license": "MPL-2.0",
+    "file": "MPL-2.0.txt",
+    "notice": "原生运行时、NAPI 接口及移植代码采用 MPL-2.0。"
+  },
+  {
+    "id": "openvpn",
+    "name": "OpenVPN 3 Core",
+    "version": "3.11.7",
+    "license": "MPL-2.0",
+    "file": "MPL-2.0.txt",
+    "notice": "Copyright (C) 2012– OpenVPN Inc.\n上游提供 MPL-2.0 或 AGPL-3.0-only（含 OpenSSL 例外）；本应用选择 MPL-2.0。内置 LZO 解压实现属于该核心。"
+  },
+  {
+    "id": "openssl",
+    "name": "OpenSSL",
+    "version": "3.5.0",
+    "license": "Apache-2.0",
+    "file": "Apache-2.0.txt",
+    "notice": "Copyright 1998–2025 The OpenSSL Project Authors.\n按项目脚本配置与编译；未修改上游源码。"
+  },
+  {
+    "id": "lz4",
+    "name": "LZ4",
+    "version": "1.10.0",
+    "license": "BSD-2-Clause",
+    "file": "BSD-2-Clause.txt",
+    "notice": "Copyright (c) 2011–2020, Yann Collet. All rights reserved."
+  },
+  {
+    "id": "asio",
+    "name": "Asio",
+    "version": "1.24.0",
+    "license": "BSL-1.0",
+    "file": "Boost-1.0.txt",
+    "notice": "Copyright (c) 2003–2022 Christopher M. Kohlhoff.\n头文件编译进入原生核心。"
+  },
+  {
+    "id": "llvm",
+    "name": "LLVM 运行时",
+    "version": "HarmonyOS SDK",
+    "license": "Apache-2.0 WITH LLVM-exception",
+    "file": "Apache-2.0-with-LLVM-exception.txt",
+    "notice": "原生核心使用 SDK 的 libc++ 静态运行时。许可文本同时保留 LLVM 官方附带的历史声明。"
+  }
+]
