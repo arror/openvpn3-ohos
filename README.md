@@ -66,6 +66,14 @@ OHOS_APP_DIR=/absolute/path/to/app bash scripts/build.sh
 
 仅复制原生库至 `entry/libs/arm64-v8a/`，以及 `index.d.ts` 至 `entry/src/main/ets/libovpn/`。原生库与接口声明必须一起更新。应用仍需自行实现 VPN 扩展与 TunProvider，不能仅复制库就完成系统 VPN 集成。
 
+## 证书文件转换
+
+`OvpnImportCertificates(files)` 在原生后台线程中批量识别并转换证书材料，和 VPN 会话生命周期分离。支持 X.509 PEM/DER、PKCS#7 PEM/DER、现代 PKCS#12/PFX、RSA PKCS#1 / EC SEC1 / PKCS#8 私钥与混合 PEM。格式由内容决定，返回证书指纹、CA 属性、公钥匹配标识、经过签名校验的签发关系和规范化 PEM。
+
+加密私钥保持保护；PFX 提取的私钥输出为加密 PKCS#8，空密码包需要提供 `outputPassword`。输入需区分未提供密码与明确提供空密码。解锁失败、格式/算法不支持与资源超限分别返回错误码；整批失败时不返回部分材料。单文件最多 8 MiB、每批最多 8 个文件/16 MiB。转换模块不加载 legacy provider，不增加旧版 RC2 PFX 的额外兼容，也不改变 VPN 的 TLS 设置。证书包中的 CA 只是候选材料，应用必须让用户确认服务器信任。
+
+类型和错误结果见 [index.d.ts](index.d.ts)，解析与密码保护回归见 [src/test_certificate_import.cpp](src/test_certificate_import.cpp)。可运行测试程序的 `--fixtures /temporary/directory` 生成测试专用材料；不要使用这些临时证书提供实际服务。应用应在主编辑页保存时将配置和私钥密码作为同一版本提交，密码不得写入配置或日志。
+
 ## Host 回归
 
 ```bash
@@ -74,7 +82,7 @@ brew install openssl@3 lz4 cmake
 bash scripts/test-host.sh
 ```
 
-包含四组 C++ 回归：配置解析与凭据指令、路由补集、会话状态机及清理恢复、真实压缩数据解压。生产与普通 Host 回归均不链接 `liblzo2`。
+包含五组 C++ 回归：配置解析与凭据指令、路由补集、会话状态机及清理恢复、真实压缩数据解压、证书格式识别与转换。生产与普通 Host 回归均不链接 `liblzo2`。
 
 压缩向量由独立 LZO/LZ4 工具生成，固定数据已入库。回归覆盖 LZO、LZO-swap、LZ4、LZ4-v2，逐字节比较解压内容，并检查截断、解压溢出与非对称发送。仅重新生成向量时才需安装测试工具 LZO，见 `scripts/generate-compression-vectors.py`。
 

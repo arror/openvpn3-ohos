@@ -813,10 +813,14 @@ static napi_value ArkTsOvpnParseDynamicChallenge(napi_env env, napi_callback_inf
     return result;
 }
 
+#include "napi/certificate_bridge.inc"
+
 static napi_value ModuleInit(napi_env env, napi_value exports) {
     if (g_bridge) { napi_throw_error(env, "ENV_ALREADY_BOUND", "Runtime belongs to the application environment"); return nullptr; }
     InstallRuntime(env);
     napi_property_descriptor desc[] = {
+        {"OvpnImportCertificates", nullptr, ImportCertificates, nullptr, nullptr, nullptr, napi_default, nullptr},
+        {"OvpnGeneratePrivateKeyPassword", nullptr, GeneratePrivateKeyPassword, nullptr, nullptr, nullptr, napi_default, nullptr},
         {"OvpnConnect", nullptr, ConnectCommand, nullptr, nullptr, nullptr, napi_default, nullptr},
         {"OvpnDisconnect", nullptr, DisconnectCommand, nullptr, nullptr, nullptr, napi_default, nullptr},
         {"OvpnGetState", nullptr, GetState, nullptr, nullptr, nullptr, napi_default, nullptr},

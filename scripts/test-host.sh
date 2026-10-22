@@ -94,7 +94,7 @@ if [ "${1:-}" = "--rebuild" ]; then
 fi
 mkdir -p "$BUILD_DIR"
 
-TESTS=(test_profile_model test_route_emulate test_session_runtime test_compression)
+TESTS=(test_profile_model test_route_emulate test_session_runtime test_compression test_certificate_import)
 FAILED=()
 
 for t in "${TESTS[@]}"; do
@@ -123,6 +123,7 @@ if [ -d "$ARKOVPN_APP_ROOT/entry/src/main/ets" ]; then
     "$NODE_BIN" "$PROJECT_ROOT/scripts/test-file-utils.cjs"
     "$NODE_BIN" "$PROJECT_ROOT/scripts/test-lab-readiness.cjs"
     "$NODE_BIN" "$PROJECT_ROOT/scripts/test-legal.cjs"
+    "$NODE_BIN" "$PROJECT_ROOT/scripts/test-certificate-import.cjs"
 else
     echo "No application checkout: ArkTS integration tests not run (set ARKOVPN_APP_ROOT)."
 fi

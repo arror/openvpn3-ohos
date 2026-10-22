@@ -2,6 +2,29 @@
 /** OpenVPN runtime API v2: admission receipts and authoritative Native snapshots. */
 import { vpnExtension } from "@kit.NetworkKit";
 
+/** Offline batch import. Input bytes are copied before asynchronous processing. No legacy provider is loaded. */
+export interface OvpnCertificateInput {
+  data: ArrayBuffer;
+  password: string;
+  passwordProvided: boolean;
+  outputPassword: string;
+}
+export interface OvpnImportedCertificate {
+  id: string; publicKeyId: string; name: string; issuer: string;
+  validFrom: string; validTo: string; algorithm: string; pem: string;
+  ca: boolean; expired: boolean; clientUsage: boolean; selfSigned: boolean; fileIndex: number; fileIndexes: number[]; issuerIds: string[];
+}
+export interface OvpnImportedPrivateKey {
+  id: string; algorithm: string; pem: string; encrypted: boolean; fileIndex: number; fileIndexes: number[];
+}
+export interface OvpnCertificateImportResult {
+  errorCode: string; fileIndex: number; unverifiedIntegrity: boolean;
+  certificates: OvpnImportedCertificate[]; keys: OvpnImportedPrivateKey[];
+}
+export const OvpnImportCertificates: (files: OvpnCertificateInput[]) => Promise<OvpnCertificateImportResult>;
+/** Independent 256-bit private DRBG password; throws when secure randomness is unavailable. Never log or display. */
+export const OvpnGeneratePrivateKeyPassword: () => string;
+
 /** VPN 事件 */
 export interface OvpnEvent {
   /** 事件名称: "RESOLVE" | "WAIT" | "CONNECTING" | "CONNECTED" | "DISCONNECTED" | "RECONNECTING" | "EXIT" | ... */
